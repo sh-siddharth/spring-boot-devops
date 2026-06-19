@@ -21,4 +21,4 @@ RUN ./mvnw clean package -DskipTests
 EXPOSE 8080
 
 # Step 8: Run the application jar file
-CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/deploy-demo-0.0.1-SNAPSHOT.jar"]
