@@ -26,3 +26,8 @@ jobs:
 
       - name: Build and Test with Maven
         run: ./mvnw clean package
+
+      # 2. TRIGGER SECURE DEPLOYMENT (Only runs if tests pass)
+      - name: Trigger Deployment on Render
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
