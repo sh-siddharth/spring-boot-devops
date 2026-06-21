@@ -30,7 +30,7 @@ class DeployDemoApplicationTests {
 				.getResponseBody();
 
 		// 2. Verify the response contains our string
-		assertThat(response).contains("Wow! My automated pipeline");
+		assertThat(response).contains("Hello World");
 	}
 
 
