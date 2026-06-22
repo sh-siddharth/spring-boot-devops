@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-deployment
+  labels:
+    app: spring-app
+spec:
+  replicas: 2 # Kubernetes will maintain exactly 2 running copies!
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+        - name: spring-container
+          image: deploy-demo-local:latest # Points to your local Docker image
+          imagePullPolicy: Never # Forces K8s to look on your Mac instead of online
+          ports:
+            - containerPort: 8080
+          # ADD THIS BLOCK RIGHT HERE:
+          resources:
+            requests:
+              memory: "256Mi"   # The minimum RAM this container needs to start
+              cpu: "100m"       # 100 milli-cpus (10% of 1 CPU core)
+            limits:
+              memory: "512Mi"   # The absolute maximum RAM this container can ever use
+              cpu: "500m"       # 500 milli-cpus (50% of 1 CPU core)
+          env:
+            - name: APP_USER_NAME
+              value: "Siddharth-Prod-test" # Injects your environment variable!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-service
+spec:
+  type: NodePort # Exposes the application outside the cluster
+  selector:
+    app: spring-app
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080 # The manual port you will use to visit the app
